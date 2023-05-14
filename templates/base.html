@@ -79,55 +79,5 @@ function sendAudioData(audioBlob) {
       // Handle network or fetch API error
     });
 }
-
-<!--    let mediaRecorder = null;-->
-<!--    let chunks = [];-->
-<!--    const recordButton = document.getElementById("recordButton");-->
-<!--    const checkButton = document.getElementById("checkButton");-->
-<!--    recordButton.addEventListener("click", startRecording);-->
-<!--    checkButton.addEventListener("click", stopRecording);-->
-
-<!--    function startRecording() {-->
-<!--      chunks = [];-->
-<!--      navigator.mediaDevices.getUserMedia({-->
-<!--        audio: true-->
-<!--      }).then((stream) => {-->
-<!--        mediaRecorder = new MediaRecorder(stream);-->
-<!--        mediaRecorder.start();-->
-<!--        recordButton.style.backgroundColor = "red";-->
-<!--        checkButton.disabled = false;-->
-<!--        mediaRecorder.addEventListener("stop", () => {-->
-<!--          const audioBlob = new Blob(chunks, {-->
-<!--            type: "audio/ogg; codecs=opus"-->
-<!--          });-->
-<!--          sendAudioData(audioBlob);-->
-<!--          chunks = [];-->
-<!--        });-->
-<!--      });-->
-<!--      mediaRecorder.addEventListener("dataavailable", (event) => {-->
-<!--        chunks.push(event.data);-->
-<!--      });-->
-<!--    }-->
-
-<!--    function stopRecording() {-->
-<!--      mediaRecorder.stop();-->
-<!--    }-->
-
-<!--    function sendAudioData(audioBlob) {-->
-<!--      const formData = new FormData();-->
-<!--      formData.append("audio", audioBlob, "recorded_audio.ogg");-->
-<!--      fetch("http://127.0.0.1:3000/recording", {-->
-<!--        method: "POST",-->
-<!--        body: formData,-->
-<!--      }).then((response) => {-->
-<!--        if (response.ok) {-->
-<!--          // Handle successful response-->
-<!--        } else {-->
-<!--          // Handle error response-->
-<!--        }-->
-<!--      }).catch((error) => {-->
-<!--        // Handle network or fetch API error-->
-<!--      });-->
-<!--    }-->
   </script>
 </html>
