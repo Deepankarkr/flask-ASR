@@ -1,12 +1,10 @@
-import os
 from random import random
 from urllib import request
 from flask import Flask, render_template, request, redirect, jsonify
 import random
 import speech_recognition as sr
-
 app=Flask(__name__)
-
+import wave
 
 def convert_to_hindi(number):
     hindi_digits = {
@@ -61,17 +59,27 @@ def indx():
 
 @app.route('/recording', methods=['GET','POST'])
 def indx1():
-    if 'audio' in request.files:
-        audio_file = request.files['audio']
-        media_details = {
-            'filename': audio_file.filename,
-            'content_type': audio_file.content_type,
-            'size': len(audio_file.read()),
-        }
-        print(media_details)
-        return jsonify(media_details), 200
+    if request.method=='POST':
+        if 'audio_data' in request.files:
+            audio_file = request.files['audio_data']
+            media_details = {
+                'filename': audio_file.filename,
+                'content_type': audio_file.content_type,
+                'size': len(audio_file.read()),
+            }
+
+            print(media_details)
+            # recognizer = sr.Recognizer()
+            # audioFile = sr.AudioFile(audio_file)
+            # with audioFile as source:
+            #     data = recognizer.record(source)
+            #     transcript = recognizer.recognize_google(data, key=None,language="mr-IN")
+            # print(transcript)
+            return str("test"), 200
+        else:
+            return 'No audio file received', 400
     else:
-        return 'No audio file received', 400
+        return 'GET Not Allowed', 400
 
 if __name__ == '__main__':
-    app.run(port='3000',debug=True)
+    app.run(port=3000,debug=True)

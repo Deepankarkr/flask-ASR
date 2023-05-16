@@ -3,81 +3,23 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="{{url_for('static', filename='app.js')}}"></script>
+    <script src="{{url_for('static', filename='recorder.js')}}"></script>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
   </head>
-  <div class="container">
-    <div class="jumbotron">
-      <h3>मराठी भाषा उच्चार ओळख</h3>
-      <br>
-      <div class="content">
+  <div>
+      <h1>मराठी भाषा उच्चार ओळख</h1>
+      <div>
         <h1>प्रश्न</h1> {% if transcript != "" %} <span style="font-size: 200px;">{{ number }} &times {{ times }} = {{ transcript }} {% endif %} </span>
-        <br>
       </div>
       <hr>
       <h3>ऑडिओ रेकॉर्ड करा आणि उत्तर सत्यापित करा</h3>
-      <div class="button-group">
-        <button id="recordButton">Record</button>
-        <button id="checkButton" disabled>Check</button>
-      </div>
-      <!-- placeholder for display spectrogram -->
+    <div>
+    <button id="recordButton">बोलणे</button>
+        <br>
+    <button id="stopButton">उत्तर तपासा</button>
+    </div>
     </div>
   </div>
-  </div>
   </body>
-  <script>
-  let mediaRecorder = null;
-let chunks = [];
-const recordButton = document.getElementById("recordButton");
-const checkButton = document.getElementById("checkButton");
-
-recordButton.addEventListener("click", startRecording);
-checkButton.addEventListener("click", stopRecording);
-
-function startRecording() {
-  chunks = [];
-  navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-    mediaRecorder = new MediaRecorder(stream);
-    mediaRecorder.start();
-    recordButton.style.backgroundColor = "red";
-    checkButton.disabled = false;
-
-    mediaRecorder.addEventListener("stop", () => {
-      const audioBlob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
-      sendAudioData(audioBlob);
-      chunks = [];
-    });
-  });
-
-  mediaRecorder.addEventListener("dataavailable", (event) => {
-    chunks.push(event.data);
-  });
-}
-
-function stopRecording() {
-  mediaRecorder.stop();
-}
-
-function sendAudioData(audioBlob) {
-  const formData = new FormData();
-  formData.append("audio", audioBlob, "recorded_audio.ogg");
-
-  fetch("http://127.0.0.1:3000/recording", {
-    method: "POST",
-    body: formData,
-  })
-    .then((response) => {
-      if (response.ok) {
-        // Handle successful response
-      } else {
-        // Handle error response
-      }
-    })
-    .catch((error) => {
-      // Handle network or fetch API error
-    });
-}
-  </script>
 </html>
